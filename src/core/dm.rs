@@ -443,6 +443,9 @@ impl DM {
     /// Documentation/device-mapper
     /// for more.
     ///
+    /// `flags` optional DmFlags::DM_READONLY flag passed with the table load
+    /// command.
+    ///
     /// # Example
     ///
     /// ```no_run
@@ -460,14 +463,16 @@ impl DM {
     ///
     /// let name = DmName::new("example-dev").expect("is valid DM name");
     /// let id = DevId::Name(name);
-    /// dm.table_load(&id, &table).unwrap();
+    /// dm.table_load(&id, &table, None).unwrap();
     /// ```
     pub fn table_load(
         &self,
         id: &DevId,
         targets: &[(u64, u64, String, String)],
+        flags: Option<DmFlags>,
     ) -> DmResult<DeviceInfo> {
         let mut cursor = Cursor::new(Vec::new());
+
         // Construct targets first, since we need to know how many & size
         // before initializing the header.
         for (sector_start, length, target_type, params) in targets {
@@ -497,7 +502,9 @@ impl DM {
             cursor.write_all(vec![0; padding].as_slice())?;
         }
 
-        let mut hdr = DmOptions::new().to_ioctl_hdr(Some(id), DmFlags::empty())?;
+        let mut hdr = DmOptions::new()
+            .set_flags(flags.unwrap_or_default())
+            .to_ioctl_hdr(Some(id), DmFlags::DM_READONLY)?;
 
         // io_ioctl() will set hdr.data_size but we must set target_count
         hdr.target_count = targets.len() as u32;
