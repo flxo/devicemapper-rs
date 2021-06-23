@@ -19,11 +19,11 @@ jobs:
       matrix:
         target:
           - aarch64-linux-android
-          # - aarch64-unknown-linux-gnu
-          # - aarch64-unknown-linux-musl
+          - aarch64-unknown-linux-gnu
+          - aarch64-unknown-linux-musl
     steps:
       - name: Install clang
-        run: sudo apt install libclang1
+        run: sudo apt install clang
       - name: Check ${{ matrix.target}}
         uses: actions-rs/toolchain@v1
         with:
