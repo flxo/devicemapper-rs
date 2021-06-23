@@ -23,7 +23,7 @@ jobs:
           - aarch64-unknown-linux-musl
     steps:
       - name: Install clang
-        run: sudo apt install libclang-9-dev
+        run: sudo apt install clang-9 libclang-9-dev
       - name: Check ${{ matrix.target}}
         uses: actions-rs/toolchain@v1
         with:
