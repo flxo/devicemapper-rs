@@ -18,10 +18,11 @@ jobs:
       matrix:
         target:
           - aarch64-linux-android
-          #- aarch64-unknown-linux-gnu
-          #- aarch64-unknown-linux-musl
+          # - aarch64-unknown-linux-gnu
+          # - aarch64-unknown-linux-musl
     steps:
       - name: Check ${{ matrix.target}}
+        run: sudo apt install libcap-dev
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
