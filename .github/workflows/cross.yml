@@ -1,6 +1,7 @@
 ---
 name: devicemapper cross CI
 
+# yamllint disable-line rule:truthy
 on:
   push:
     branches: [master]
