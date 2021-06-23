@@ -22,8 +22,6 @@ jobs:
           - aarch64-unknown-linux-gnu
           - aarch64-unknown-linux-musl
     steps:
-      - name: Install clang
-        run: sudo apt install llvm-dev libclang-dev clang
       - name: Check ${{ matrix.target}}
         uses: actions-rs/toolchain@v1
         with:
